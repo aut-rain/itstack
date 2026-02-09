@@ -63,3 +63,6 @@ junit*.properties
 
 # Coverage report
 jacoco/
+
+# Claude Code
+.claude
