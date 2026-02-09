@@ -120,6 +120,9 @@ git remote add origin <repository-url>
 # 添加指定文件到暂存区
 git add <file-name>
 
+# 将指定文件移出暂存区
+git rm --cached <file-name>
+
 # 添加所有文件到暂存区
 git add .
 
