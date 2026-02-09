@@ -90,6 +90,9 @@ git config --global user.email "your.email@example.com"
 
 # 查看配置
 git config --list
+
+# 手动修改
+windows的文件地址: C:\Users\用户名\.gitconfig
 ```
 
 ### 仓库操作
