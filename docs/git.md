@@ -255,7 +255,7 @@ git revert <commit-id>
 git tag
 
 # 创建轻量标签
-git tag <tag-name>
+git tag <tag-name> <log-id>
 
 # 创建附注标签
 git tag -a <tag-name> -m "tag message"
