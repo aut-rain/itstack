@@ -66,3 +66,4 @@ jacoco/
 
 # Claude Code
 .claude
+/.mcp.json
