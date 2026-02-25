@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://172.24.45.109:3306/mp?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: zzy
+    password: Zhu20030901
+logging:
+  level:
+    com.itheima: debug
+  pattern:
+    dateformat: HH:mm:ss
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
