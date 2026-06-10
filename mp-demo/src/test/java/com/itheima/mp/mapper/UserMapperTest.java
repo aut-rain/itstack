@@ -1,5 +1,8 @@
 package com.itheima.mp.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.itheima.mp.domain.po.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +40,7 @@ class UserMapperTest {
 
     @Test
     void testQueryByIds() {
-        List<User> users = userMapper.selectByIds(List.of(1L, 2L, 3L, 4L));
+        List<User> users = userMapper.selectBatchIds(List.of(1L, 2L, 3L, 4L));
         users.forEach(System.out::println);
     }
 
@@ -53,4 +56,49 @@ class UserMapperTest {
     void testDeleteUser() {
         userMapper.deleteById(5L);
     }
+
+    @Test
+    void testQueryWrapper() {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>()
+                .select("id", "username", "info","balance")
+                .like("username", "o")
+                .ge("balance", 1000);
+        List<User> users = userMapper.selectList(queryWrapper);
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    void testUpdateByQueryWrapper() {
+        User user = new User();
+        user.setBalance(2000);
+        QueryWrapper<User> wrapper = new QueryWrapper<User>()
+                .eq("username", "jack");
+        userMapper.update(user, wrapper);
+    }
+
+    @Test
+    void testUpdateWrapper() {
+        UpdateWrapper<User> wrapper = new UpdateWrapper<User>()
+                .setSql("balance = balance + 1000")
+                .eq("username", "jack");
+        userMapper.update(null, wrapper);
+    }
+
+    @Test
+    void testLambdaQueryWrapper() {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>()
+                .select(User::getId, User::getUsername, User::getInfo, User::getBalance)
+                .like(User::getUsername, "o")
+                .ge(User::getBalance, 1000);
+        List<User> users = userMapper.selectList(lambdaQueryWrapper);
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    void testUpdateWrapper2() {
+        List<Long> ids = List.of(1L, 2L, 3L);
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>().in(User::getId, ids);
+        userMapper.updateBalanceByIds(wrapper, 1000);
+    }
+
 }
