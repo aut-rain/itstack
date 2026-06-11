@@ -14,8 +14,8 @@
 
     <!-- 子模块 -->
     <modules>
-        <module>mp-demo</module>
         <module>demo-design</module>
+        <module>base</module>
     </modules>
 
     <properties>
