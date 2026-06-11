@@ -15,6 +15,12 @@ public class CalculatorTest {
         System.out.println("执行 testSubtract");
     }
 
+    @MyTest
+    public void testFail() {
+        System.out.println("执行 testFail");
+        assert false;
+    }
+
     public void notATest() {
         System.out.println("这个方法不应该被执行");
     }

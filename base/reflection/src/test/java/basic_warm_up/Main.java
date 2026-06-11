@@ -7,6 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 
 
 public class Main {
+
+    /**
+     * TODO: 创建一个 Dog 类，并使用反射创建实例
+     */
+
     @Test
     public void test_1() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Class<?> clazz = Dog.class;
