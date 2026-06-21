@@ -45,7 +45,7 @@ public class Main {
             }
             Class<?> argType = args[i].getClass();
             Class<?> parameterType = parameterTypes[i];
-            if (argType.isAssignableFrom(parameterType)){
+            if (parameterType.isAssignableFrom(argType)){   // isAssignableFrom用于判断argType能否赋值给parameterType
                 continue;
             }
 
@@ -111,5 +111,11 @@ public class Main {
         // TODO: 调用 invokeMethod(printer, "print", "Hello Reflection")
         invokeMethod(printer, "print", "Hello Reflection");
         System.out.println("OK");
+    }
+
+    @Test
+    public void test(){
+        System.out.println("String 赋值给 Object 是否合法：" + Object.class.isAssignableFrom(String.class));
+        System.out.println("Object 赋值给 String 是否合法：" + String.class.isAssignableFrom(Object.class));
     }
 }

@@ -20,6 +20,9 @@ public class Main {
      */
 
     private static HashMap<String, Class<?>> cache = new HashMap<>();
+    static {
+
+    }
 
     public static IPay create(String type) throws Exception {
         // TODO: 在这里写你的实现
