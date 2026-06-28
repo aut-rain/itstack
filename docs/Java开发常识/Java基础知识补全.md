@@ -1,6 +1,6 @@
 # Java 基础知识补全
 
-> 代码块、static、异常处理、instanceof vs isAssignableFrom
+> 代码块、static、instanceof vs isAssignableFrom
 
 ---
 
@@ -150,107 +150,7 @@ public static void main(String[] args) { ... }
 
 ---
 
-## 四、异常处理
-
-### 异常体系
-
-```
-Object
-  └── Throwable
-       ├── Error      → JVM 层面的严重问题（OutOfMemoryError），你不用管
-       └── Exception  → 你需要处理的
-            ├── RuntimeException（非受检异常）→ 空指针、数组越界等
-            └── 其他 Exception（受检异常）→ 必须 try-catch 或 throws
-```
-
-### 受检 vs 非受检
-
-| 类型 | 编译器是否强制处理 | 常见例子 |
-|------|-------------------|---------|
-| 受检异常（Checked） | ✅ 强制 | `IOException`、`SQLException`、反射相关异常 |
-| 非受检异常（Unchecked） | ❌ 不强制 | `NullPointerException`、`ArithmeticException`、`IllegalArgumentException` |
-
-```java
-// 受检异常 —— 编译器强制你处理
-public void read() throws IOException {        // 要么 throws
-    FileInputStream fis = new FileInputStream("a.txt");
-}
-
-public void read2() {
-    try {                                       // 要么 try-catch
-        FileInputStream fis = new FileInputStream("a.txt");
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-
-// 非受检异常 —— 编译器不强制，运行时才报错
-public void div(int a, int b) {
-    int result = a / b;  // b=0 时抛 ArithmeticException，但编译不报错
-}
-```
-
-### 三种处理方式
-
-```java
-// 方式一：throws 往上抛（测试代码常用）
-@Test
-public void test() throws Exception {
-    clazz.getDeclaredConstructor().newInstance();
-}
-
-// 方式二：try-catch 自己处理
-@Test
-public void test() {
-    try {
-        clazz.getDeclaredConstructor().newInstance();
-    } catch (NoSuchMethodException e) {
-        System.out.println("找不到无参构造器: " + e.getMessage());
-    } catch (Exception e) {
-        System.out.println("其他异常: " + e.getMessage());
-    }
-}
-
-// 方式三：try-catch 转成 RuntimeException（工厂/工具类常用）
-public static IPay create(String type) {
-    try {
-        return (IPay) clazz.getDeclaredConstructor().newInstance();
-    } catch (Exception e) {
-        throw new RuntimeException("创建失败: " + clazz.getName(), e);
-    }
-}
-```
-
-### InvocationTargetException 的特殊性
-
-反射调用方法时，如果方法**内部**抛了异常，不会被原始类型抛出来，而是被包在 `InvocationTargetException` 里：
-
-```java
-try {
-    method.invoke(object);   // 反射调用
-} catch (InvocationTargetException e) {
-    // 真正的异常藏在 e.getCause() 里
-    System.out.println("方法内部抛出异常: " + e.getCause());
-}
-```
-
-比如题6里 `testFail()` 中 `assert false` 抛出的 `AssertionError` 就是这样被包住的。
-
-### 常见受检异常速查
-
-| 异常 | 触发场景 |
-|------|---------|
-| `IOException` | 文件读写、网络操作 |
-| `ClassNotFoundException` | `Class.forName()` 找不到类 |
-| `NoSuchMethodException` | `getDeclaredMethod()` 找不到方法 |
-| `NoSuchFieldException` | `getDeclaredField()` 找不到字段 |
-| `IllegalAccessException` | 访问 private 成员时没 `setAccessible(true)` |
-| `InstantiationException` | 抽象类或接口无法实例化 |
-| `InvocationTargetException` | 反射调用的方法内部抛了异常 |
-
----
-
-## 五、instanceof vs isAssignableFrom
+## 四、instanceof vs isAssignableFrom
 
 ### instanceof：判断"这个对象是不是某个类型"
 
@@ -314,7 +214,5 @@ if (obj instanceof Ipay) {
 | 实例代码块 `{}` | 每次 new 都执行，在构造器之前，很少用 |
 | static 代码块 `static {}` | 类加载时执行一次，适合做复杂初始化 |
 | static 方法 | 属于类不属于对象，里面没有 `this`，只能访问 static 成员 |
-| 受检异常 | 编译器强制处理（try-catch 或 throws） |
-| 非受检异常 | `RuntimeException` 及其子类，编译器不强制 |
 | `instanceof` | 对象 → 类，"你是这个类型吗？" |
 | `isAssignableFrom` | 类 → 类，"我能装你吗？" |
